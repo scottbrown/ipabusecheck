@@ -22,6 +22,21 @@ fmt:
 clean:
 	rm -rf $(build.dir) $(dist.dir)
 
+.PHONY: check
+check: sast vet vuln
+
+.PHONY: sast
+sast:
+	gosec ./...
+
+.PHONY: vet
+vet:
+	go vet ./...
+
+.PHONY: vuln
+vuln:
+	govulncheck ./...
+
 .PHONY: release
 release: get-version
 	GOOS=linux GOARCH=amd64 go build -o $(build.dir)/linux-amd64/dumpcft $(app.repo)/cmd
