@@ -2,8 +2,9 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+  "encoding/csv"
 	"os"
+  "strconv"
 
 	"github.com/scottbrown/ipabusecheck"
 
@@ -60,10 +61,11 @@ func handleRoot(cmd *cobra.Command, args []string) error {
 	}
 	defer outputFile.Close()
 
-	writer := bufio.NewWriter(outputFile)
+	writer := csv.NewWriter(outputFile)
 	for _, report := range reports {
-		_, err := writer.WriteString(fmt.Sprintf("\"%s\",%d,%d\n", report.IPAddress, report.TotalReports, report.ConfidenceScore))
-		if err != nil {
+    iTotalReports := strconv.FormatInt(report.TotalReports, 10)
+    iConfidenceScore := strconv.FormatInt(report.ConfidenceScore, 10)
+		if err := writer.Write([]string{report.IPAddress, iTotalReports, iConfidenceScore,}); err != nil {
 			return err
 		}
 	}
