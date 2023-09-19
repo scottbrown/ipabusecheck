@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-  "fmt"
+	"fmt"
 	"os"
 
 	"github.com/scottbrown/ipabusecheck"
@@ -42,7 +42,7 @@ func handleRoot(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-  var reports []ipabusecheck.Report
+	var reports []ipabusecheck.Report
 	bar := progressbar.Default(int64(len(ipAddresses)))
 	for _, ipAddress := range ipAddresses {
 		bar.Add(1)
@@ -51,23 +51,23 @@ func handleRoot(cmd *cobra.Command, args []string) error {
 			return err
 		}
 
-    reports = append(reports, report)
+		reports = append(reports, report)
 	}
 
-  outputFile, err := os.OpenFile(outputFilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-  if err != nil {
-    return err
-  }
-  defer outputFile.Close()
+	outputFile, err := os.OpenFile(outputFilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+	defer outputFile.Close()
 
-  writer := bufio.NewWriter(outputFile)
-  for _, report := range reports {
-    _, err := writer.WriteString(fmt.Sprintf("\"%s\",%d,%d\n", report.IPAddress, report.TotalReports, report.ConfidenceScore))
-    if err != nil {
-      return err
-    }
-  }
-  writer.Flush()
+	writer := bufio.NewWriter(outputFile)
+	for _, report := range reports {
+		_, err := writer.WriteString(fmt.Sprintf("\"%s\",%d,%d\n", report.IPAddress, report.TotalReports, report.ConfidenceScore))
+		if err != nil {
+			return err
+		}
+	}
+	writer.Flush()
 
 	return nil
 }
