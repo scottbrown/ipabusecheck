@@ -22,3 +22,4 @@ go.work
 
 # derived directories
 .build
+.dist
