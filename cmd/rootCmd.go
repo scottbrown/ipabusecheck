@@ -2,9 +2,9 @@ package main
 
 import (
 	"bufio"
-  "encoding/csv"
+	"encoding/csv"
 	"os"
-  "strconv"
+	"strconv"
 
 	"github.com/scottbrown/ipabusecheck"
 
@@ -28,6 +28,7 @@ func handleRoot(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	/* #nosec G307 */
 	defer inputFile.Close()
 
 	var ipAddresses []string
@@ -46,6 +47,7 @@ func handleRoot(cmd *cobra.Command, args []string) error {
 	var reports []ipabusecheck.Report
 	bar := progressbar.Default(int64(len(ipAddresses)))
 	for _, ipAddress := range ipAddresses {
+		/* #nosec G104 */
 		bar.Add(1)
 		report, err := checker.Check(ipAddress)
 		if err != nil {
@@ -55,17 +57,18 @@ func handleRoot(cmd *cobra.Command, args []string) error {
 		reports = append(reports, report)
 	}
 
-	outputFile, err := os.OpenFile(outputFilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	outputFile, err := os.OpenFile(outputFilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
 	}
+	/* #nosec G307 */
 	defer outputFile.Close()
 
 	writer := csv.NewWriter(outputFile)
 	for _, report := range reports {
-    iTotalReports := strconv.FormatInt(report.TotalReports, 10)
-    iConfidenceScore := strconv.FormatInt(report.ConfidenceScore, 10)
-		if err := writer.Write([]string{report.IPAddress, iTotalReports, iConfidenceScore,}); err != nil {
+		iTotalReports := strconv.FormatInt(report.TotalReports, 10)
+		iConfidenceScore := strconv.FormatInt(report.ConfidenceScore, 10)
+		if err := writer.Write([]string{report.IPAddress, iTotalReports, iConfidenceScore}); err != nil {
 			return err
 		}
 	}

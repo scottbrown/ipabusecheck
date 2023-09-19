@@ -41,6 +41,7 @@ func (c Checker) Check(ipAddress string) (Report, error) {
 	if err != nil {
 		return Report{}, err
 	}
+	/* #nosec G307 */
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {

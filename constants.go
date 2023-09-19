@@ -6,6 +6,7 @@ const (
 	abuseConfidenceScoreKey string = "abuseConfidenceScore"
 )
 
+/* #nosec G101 */
 const envApiKey string = "ABUSEIPDB_API_KEY"
 
 const apiEndpoint string = "https://api.abuseipdb.com/api/v2/check"
