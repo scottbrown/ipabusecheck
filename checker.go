@@ -28,7 +28,6 @@ type Checker struct {
 func (c Checker) Check(ipAddress string) (Report, error) {
 	url := fmt.Sprintf("%s?ipAddress=%s", apiEndpoint, ipAddress)
 
-	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return Report{}, err
@@ -37,7 +36,7 @@ func (c Checker) Check(ipAddress string) (Report, error) {
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Key", os.Getenv(envApiKey))
 
-	resp, err := client.Do(req)
+	resp, err := c.Client.Do(req)
 	if err != nil {
 		return Report{}, err
 	}
