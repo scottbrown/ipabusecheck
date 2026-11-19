@@ -28,7 +28,7 @@ Download the latest release from the [Releases page](https://github.com/scottbro
 ### Build from Source
 
 Requirements:
-- Go 1.20+
+- Go 1.27.4+
 
 ```bash
 # Clone the repository
